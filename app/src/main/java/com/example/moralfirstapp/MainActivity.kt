@@ -10,9 +10,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moralfirstapp.ui.theme.MoralFirstAppTheme
 import androidx.compose.runtime.getValue
+
+//import android.view.WindowManager
 
 
 class MainActivity : ComponentActivity() {
@@ -37,8 +39,8 @@ class MainActivity : ComponentActivity() {
             MoralFirstAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize().background(color = Color.White)
+
                 ) {
                     CookieClickerScreen(gameViewModel)
                 }
@@ -48,13 +50,19 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CookieClickerScreen(viewModel: CookieViewModel, modifier: Modifier = Modifier) {
+fun CookieClickerScreen(viewModel: CookieViewModel,
+                        modifier: Modifier = Modifier) {
 
     val cookieCount by viewModel.cookieCount.collectAsState()
+    val countdownActive by viewModel.countdownActive.collectAsState()
+    val isButtonClickable by viewModel.isButtonClickable.collectAsState()
+    val clock by viewModel.clock.collectAsState()
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     )
+
     {
         Text(
             text = "Cookie Clicker App",
@@ -77,9 +85,11 @@ fun CookieClickerScreen(viewModel: CookieViewModel, modifier: Modifier = Modifie
         // show a count of the cookies
 
         Button(
-            onClick = { viewModel.incrementCookieCount() },
-            modifier = modifier.size(200.dp)
-            ) {
+            enabled = isButtonClickable,
+            onClick = {
+                viewModel.onCookieClicked()
+            }
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.cookie),
                 contentDescription = "Cookie",
@@ -88,13 +98,23 @@ fun CookieClickerScreen(viewModel: CookieViewModel, modifier: Modifier = Modifie
                     .background(Color.Transparent)
             )
         }
+        if (countdownActive) {
+            Text(
+                text = clock.toString(),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
     }
+
 }
+
+
+
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewCookieClickerScreen() {
-    var viewModel = CookieViewModel()
+    val viewModel = CookieViewModel()
     MoralFirstAppTheme {
         CookieClickerScreen(viewModel = viewModel)
     }

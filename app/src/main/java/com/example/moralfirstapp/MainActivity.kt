@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moralfirstapp.ui.theme.MoralFirstAppTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.sp
 
 //import android.view.WindowManager
 
@@ -101,7 +102,10 @@ fun CookieClickerScreen(viewModel: CookieViewModel,
         if (countdownActive) {
             Text(
                 text = clock.toString(),
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp),
+                fontSize = 48.sp,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
             )
         }
     }

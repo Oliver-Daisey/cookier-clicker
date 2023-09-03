@@ -29,7 +29,7 @@ class CookieViewModel : ViewModel() {
         val countDownLength = 10000L // how long to play for
         val coolDownLength = 3000L // how long to show score for
 
-        _cookieCount.value = 0 // Reset cookie count
+        _cookieCount.value = 1 // Reset cookie count
         _countdownActive.value = true
         _clock.value = countDownLength.toInt() / 1000 + 1
 
